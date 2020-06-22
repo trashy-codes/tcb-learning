@@ -1,0 +1,83 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+    <script src="https://imgcache.qq.com/qcloud/tcbjs/1.7.0/tcb.js"></script>
+</head>
+
+<body>
+    <p>day3</p>
+    <p>id:代码抄写师</p>
+    <p>专属号码:allin-tcb</p>
+    <p>源码:https://github.com/DaZiYuan/tcb-learning/tree/master/day3</p>
+</body>
+<script>
+
+    const cloud = tcb.init({
+        env: "env-yiqteppu"
+    })
+    const auth = cloud.auth();
+
+
+    function appendText(txt) {
+        var node = document.createElement("P");
+        var textnode = document.createTextNode(txt);
+        node.appendChild(textnode);
+        document.body.appendChild(node);
+    }
+
+    /**
+    * 初始化云开发：匿名登录
+    */
+    function signInAnonymously() {
+        auth.anonymousAuthProvider().signIn()
+            .then((res) => {
+                let loginState = auth.hasLoginState();
+                uid = loginState.user.uid;
+                this.appendText("匿名uid:" + uid);
+
+                node = document.createElement("BUTTON");
+                node.id = "TencentCaptchaBtn";
+                var textnode = document.createTextNode("登陆");
+                node.appendChild(textnode);
+                document.body.appendChild(node);
+
+                new TencentCaptcha(
+                    document.getElementById('TencentCaptchaBtn'),
+                    '2007673156',
+                    async function (res) {/* callback */
+                        if (res.ret === 0) {
+                            console.log(res)
+
+                            let r = await cloud.callFunction({
+                                name: 'day3',
+                                data: res
+                            })
+                            console.log(r);
+
+                            for (let [key, value] of Object.entries(r.result)) {
+                                appendText(`验证结果${key}: ${value}`);
+                            }
+                        }
+                    },
+                    { bizState: '自定义透传参数' }
+                );
+            })
+    }
+
+    window.callback = function (res) {
+        console.log(res)
+        var captcha1 = new TencentCaptcha('2007673156', function (res) {
+            if (res.ret === 0) {
+                alert(res.ticket)   // 票据
+            }
+        });
+        captcha1.show(); // 显示验证码
+    }
+
+    signInAnonymously();
+
+</script>
+
+</html>

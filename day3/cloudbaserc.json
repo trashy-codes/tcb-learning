@@ -4,7 +4,7 @@
   "functions": [
     {
       "name": "day3",
-      "timeout": 5,
+      "timeout": 60,
       "envVariables": {},
       "runtime": "Nodejs10.15",
       "memorySize": 128,
