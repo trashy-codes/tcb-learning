@@ -3,7 +3,7 @@
   "functionRoot": "./functions",
   "functions": [
     {
-      "name": "net",
+      "name": "day2",
       "timeout": 5,
       "runtime": "Nodejs10.15",
       "memorySize": 128,
