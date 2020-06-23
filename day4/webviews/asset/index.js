@@ -37,26 +37,26 @@ function signInAnonymously() {
  * 加载意见列表（调用云函数：init）
  */
 function initlist() {
-    // cloud.callFunction({
-    //     name: 'init'
-    // })
-    // .then((res) => {
-    //     refreshlist(res.result.list);
-    // });
-    cloud.database().collection('advice').where({
-        _openid: uid
-    }).watch({
-        onChange: function (res) {
-            let list = res.docs.map(item => {
-                item.adddue = new Date(item.adddue.$date);
-                return item;
-            })
-            refreshlist(list);
-        },
-        onError: function (err) {
-            console.log(err);
-        }
+    cloud.callFunction({
+        name: 'init'
+    })
+    .then((res) => {
+        refreshlist(res.result.list);
     });
+    // cloud.database().collection('advice').where({
+    //     _openid: uid
+    // }).watch({
+    //     onChange: function (res) {
+    //         let list = res.docs.map(item => {
+    //             item.adddue = new Date(item.adddue.$date);
+    //             return item;
+    //         })
+    //         refreshlist(list);
+    //     },
+    //     onError: function (err) {
+    //         console.log(err);
+    //     }
+    // });
 }
 
 /**
@@ -300,8 +300,8 @@ function submittext() {
     }, function (err, res) {
         resetInput();
         refreshSubmitFlag();
-        // initlist();
         alert('意见提交成功！');
+        initlist();
     });
 }
 
