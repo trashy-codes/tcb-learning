@@ -1,7 +1,7 @@
 /**
  * 隐藏全屏图片
  */
-function hidepreview(){
+function hidepreview() {
     let preview = document.getElementById('preview');
     preview.src = "";
     preview.parentNode.style = "display:none;";
@@ -10,19 +10,26 @@ function hidepreview(){
  * 全屏展示图片
  * @param string id 
  */
-function previewnetimg(src){
+function previewnetimg(src) {
     let preview = document.getElementById('preview');
     preview.src = src;
     preview.parentNode.style = "";
 }
 
-function cloudtohttp(src) {
-    if(src==""){
-        return "";
-    }
-    let first=src.indexOf('.');
-    let end=src.indexOf('/',first);
-    return 'https://'+src.slice(first+1,end)+'.tcb.qcloud.la/'+src.slice(end+1,src.length);
+async function cloudtohttp(app, src) {
+    let r = await app.getTempFileURL({
+        fileList: [src]
+    })
+
+    return r.fileList[0].tempFileURL;
+
+    // debugger
+    // if (src == "") {
+    //     return "";
+    // }
+    // let first = src.indexOf('.');
+    // let end = src.indexOf('/', first);
+    // return 'https://' + src.slice(first + 1, end) + '.tcb.qcloud.la/' + src.slice(end + 1, src.length);
 }
 
 function dateFormat(fmt, date) {
